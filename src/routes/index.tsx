@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { MapCanvas } from "@/components/gis/MapCanvas";
 import { AttributePanel } from "@/components/gis/AttributePanel";
 import { FeatureTable } from "@/components/gis/FeatureTable";
+import { ImportGeoJSON } from "@/components/gis/ImportGeoJSON";
 import { useGisStore } from "@/lib/gis-store";
 import { Layers } from "lucide-react";
 
