@@ -191,8 +191,22 @@ export function MapCanvas() {
     if (!map) return;
     const onClick = () => gisStore.select(null);
     map.on("click", onClick);
+
+    const onFit = (ev: Event) => {
+      const ids = (ev as CustomEvent<string[]>).detail;
+      const layers = ids
+        .map((id) => layersRef.current.get(id))
+        .filter((l): l is L.Layer => !!l);
+      if (layers.length === 0) return;
+      const group = L.featureGroup(layers);
+      const bounds = group.getBounds();
+      if (bounds.isValid()) map.fitBounds(bounds, { padding: [40, 40], maxZoom: 17 });
+    };
+    window.addEventListener("gis:fit-features", onFit);
+
     return () => {
       map.off("click", onClick);
+      window.removeEventListener("gis:fit-features", onFit);
     };
   }, []);
 
