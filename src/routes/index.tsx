@@ -4,7 +4,9 @@ import { AttributePanel } from "@/components/gis/AttributePanel";
 import { FeatureTable } from "@/components/gis/FeatureTable";
 import { ImportGeoJSON } from "@/components/gis/ImportGeoJSON";
 import { useGisStore } from "@/lib/gis-store";
-import { Layers } from "lucide-react";
+import { Layers, CircleCheck as CheckCircle2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -22,6 +24,14 @@ export const Route = createFileRoute("/")({
 
 function Index() {
   const { features } = useGisStore();
+
+  const handleApprove = () => {
+    if (features.length === 0) {
+      toast.error("No features to approve");
+      return;
+    }
+    toast.success(`Approved ${features.length} feature${features.length === 1 ? "" : "s"}`);
+  };
 
   return (
     <div className="flex h-screen w-screen flex-col overflow-hidden bg-background text-foreground">
@@ -42,6 +52,16 @@ function Index() {
         </div>
         <div className="flex items-center gap-4 text-xs text-muted-foreground">
           <ImportGeoJSON />
+          <Button
+            variant="outline"
+            size="sm"
+            className="h-8 gap-1.5"
+            onClick={handleApprove}
+            disabled={features.length === 0}
+          >
+            <CheckCircle2 className="h-3.5 w-3.5" />
+            Approve
+          </Button>
           <span>
             <span className="font-semibold text-foreground">{features.length}</span> features
           </span>
