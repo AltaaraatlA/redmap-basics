@@ -194,13 +194,16 @@ export function MapCanvas() {
 
     const onFit = (ev: Event) => {
       const ids = (ev as CustomEvent<string[]>).detail;
-      const layers = ids
-        .map((id) => layersRef.current.get(id))
-        .filter((l): l is L.Layer => !!l);
-      if (layers.length === 0) return;
-      const group = L.featureGroup(layers);
-      const bounds = group.getBounds();
-      if (bounds.isValid()) map.fitBounds(bounds, { padding: [40, 40], maxZoom: 17 });
+      // wait for the feature->layer sync effect to run
+      setTimeout(() => {
+        const layers = ids
+          .map((id) => layersRef.current.get(id))
+          .filter((l): l is L.Layer => !!l);
+        if (layers.length === 0) return;
+        const group = L.featureGroup(layers);
+        const bounds = group.getBounds();
+        if (bounds.isValid()) map.fitBounds(bounds, { padding: [40, 40], maxZoom: 17 });
+      }, 50);
     };
     window.addEventListener("gis:fit-features", onFit);
 
