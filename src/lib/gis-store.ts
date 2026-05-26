@@ -19,8 +19,12 @@ class GisStore {
   private features: GisFeature[] = [];
   private selectedId: string | null = null;
   private listeners = new Set<Listener>();
+  private snapshot: { features: GisFeature[]; selectedId: string | null } = {
+    features: this.features,
+    selectedId: this.selectedId,
+  };
 
-  getSnapshot = () => ({ features: this.features, selectedId: this.selectedId });
+  getSnapshot = () => this.snapshot;
 
   subscribe = (l: Listener) => {
     this.listeners.add(l);
@@ -28,8 +32,7 @@ class GisStore {
   };
 
   private emit() {
-    const snap = { features: this.features, selectedId: this.selectedId };
-    this.features = [...snap.features];
+    this.snapshot = { features: this.features, selectedId: this.selectedId };
     this.listeners.forEach((l) => l());
   }
 
@@ -50,6 +53,7 @@ class GisStore {
   }
 
   select(id: string | null) {
+    if (this.selectedId === id) return;
     this.selectedId = id;
     this.emit();
   }
