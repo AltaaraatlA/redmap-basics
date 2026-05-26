@@ -41,6 +41,7 @@ function Index() {
           </div>
         </div>
         <div className="flex items-center gap-4 text-xs text-muted-foreground">
+          <ImportGeoJSON />
           <span>
             <span className="font-semibold text-foreground">{features.length}</span> features
           </span>
