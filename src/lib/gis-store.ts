@@ -1,4 +1,5 @@
 import { useSyncExternalStore } from "react";
+import type { Feature } from "geojson";
 
 export type GeomType = "Point" | "LineString" | "Polygon" | "Label";
 
@@ -9,7 +10,7 @@ export interface GisFeature {
   category: string;
   notes: string;
   createdAt: number;
-  geojson: GeoJSON.Feature;
+  geojson: Feature;
 }
 
 type Listener = () => void;
