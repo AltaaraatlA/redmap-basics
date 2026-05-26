@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { MapCanvas } from "@/components/gis/MapCanvas";
 import { AttributePanel } from "@/components/gis/AttributePanel";
 import { FeatureTable } from "@/components/gis/FeatureTable";
+import { ImportGeoJSON } from "@/components/gis/ImportGeoJSON";
 import { useGisStore } from "@/lib/gis-store";
 import { Layers } from "lucide-react";
 
@@ -40,6 +41,7 @@ function Index() {
           </div>
         </div>
         <div className="flex items-center gap-4 text-xs text-muted-foreground">
+          <ImportGeoJSON />
           <span>
             <span className="font-semibold text-foreground">{features.length}</span> features
           </span>
