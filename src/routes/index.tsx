@@ -3,6 +3,7 @@ import { MapCanvas } from "@/components/gis/MapCanvas";
 import { AttributePanel } from "@/components/gis/AttributePanel";
 import { FeatureTable } from "@/components/gis/FeatureTable";
 import { ImportGeoJSON } from "@/components/gis/ImportGeoJSON";
+import { MapClock } from "@/components/gis/MapClock";
 import { useGisStore } from "@/lib/gis-store";
 import {
   Layers,
