@@ -4,7 +4,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Trash2, MapPin, Spline, Hexagon, Type as TypeIcon, Database, File as FileJson, Layers as LayersIcon } from "lucide-react";
+import { Trash2, MapPin, Spline, Hexagon, Type as TypeIcon, Database, File as FileJson, Layers as LayersIcon, MessageSquare } from "lucide-react";
 
 const typeIcon = {
   Point: MapPin,
@@ -33,6 +33,10 @@ export function AttributePanel() {
           <TabsTrigger value="database" className="gap-1.5">
             <Database className="h-3.5 w-3.5" />
             Database
+          </TabsTrigger>
+          <TabsTrigger value="chat" className="gap-1.5">
+            <MessageSquare className="h-3.5 w-3.5" />
+            Chat
           </TabsTrigger>
         </TabsList>
 
@@ -122,6 +126,15 @@ export function AttributePanel() {
             <Database className="mb-3 h-10 w-10 text-muted-foreground/50" />
             <p className="font-medium text-foreground">Database Connection</p>
             <p className="mt-1">Connect to an external database to sync your features.</p>
+            <p className="mt-2 text-xs text-muted-foreground/70">Coming soon</p>
+          </div>
+        </TabsContent>
+
+        <TabsContent value="chat" className="flex-1 overflow-hidden">
+          <div className="flex h-full flex-col items-center justify-center p-6 text-center text-sm text-muted-foreground">
+            <MessageSquare className="mb-3 h-10 w-10 text-muted-foreground/50" />
+            <p className="font-medium text-foreground">Chat</p>
+            <p className="mt-1">Support team and AI assistant will be available here.</p>
             <p className="mt-2 text-xs text-muted-foreground/70">Coming soon</p>
           </div>
         </TabsContent>
