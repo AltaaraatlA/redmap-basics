@@ -25,6 +25,7 @@ import {
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 
 export const Route = createFileRoute("/")({
+  ssr: false,
   component: Index,
   head: () => ({
     meta: [
