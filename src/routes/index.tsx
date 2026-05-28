@@ -83,6 +83,39 @@ function Index() {
           </span>
           <span className="hidden h-4 w-px bg-border sm:block" />
           <span className="hidden sm:block">EPSG:4326 · CARTO Light basemap</span>
+          <span className="hidden h-4 w-px bg-border sm:block" />
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <button className="flex items-center gap-2 rounded-md border border-border bg-card px-2 py-1.5 text-foreground shadow-sm hover:bg-accent hover:text-accent-foreground transition-colors outline-none focus-visible:ring-1 focus-visible:ring-ring">
+                <Avatar className="h-5 w-5">
+                  <AvatarFallback className="bg-primary text-[10px] text-primary-foreground">
+                    <User className="h-3 w-3" />
+                  </AvatarFallback>
+                </Avatar>
+                <span className="hidden sm:inline text-xs font-medium">Profile</span>
+                <ChevronDown className="h-3 w-3 opacity-60" />
+              </button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-44">
+              <DropdownMenuItem className="gap-2 cursor-pointer">
+                <User className="h-4 w-4" />
+                Profile
+              </DropdownMenuItem>
+              <DropdownMenuItem className="gap-2 cursor-pointer">
+                <Settings className="h-4 w-4" />
+                Settings
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem className="gap-2 cursor-pointer">
+                <LogIn className="h-4 w-4" />
+                Log in
+              </DropdownMenuItem>
+              <DropdownMenuItem className="gap-2 cursor-pointer text-destructive focus:text-destructive">
+                <LogOut className="h-4 w-4" />
+                Log out
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
       </header>
 
