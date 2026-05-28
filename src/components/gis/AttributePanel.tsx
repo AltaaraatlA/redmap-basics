@@ -20,8 +20,12 @@ export function AttributePanel() {
 
   return (
     <div className="flex h-full flex-col">
-      <Tabs defaultValue="features" className="flex h-full flex-col">
+      <Tabs defaultValue="layers" className="flex h-full flex-col">
         <TabsList className="w-full justify-start rounded-none border-b border-border bg-card px-2">
+          <TabsTrigger value="layers" className="gap-1.5">
+            <LayersIcon className="h-3.5 w-3.5" />
+            Layers
+          </TabsTrigger>
           <TabsTrigger value="features" className="gap-1.5">
             <FileJson className="h-3.5 w-3.5" />
             Features
@@ -31,6 +35,16 @@ export function AttributePanel() {
             Database
           </TabsTrigger>
         </TabsList>
+
+        <TabsContent value="layers" className="flex-1 overflow-hidden">
+          <div className="flex h-full flex-col items-center justify-center p-6 text-center text-sm text-muted-foreground">
+            <LayersIcon className="mb-3 h-10 w-10 text-muted-foreground/50" />
+            <p className="font-medium text-foreground">Layers</p>
+            <p className="mt-1">Manage basemap and overlay layers here.</p>
+            <p className="mt-2 text-xs text-muted-foreground/70">Coming soon</p>
+          </div>
+        </TabsContent>
+
 
         <TabsContent value="features" className="flex-1 overflow-hidden">
           {f ? (
