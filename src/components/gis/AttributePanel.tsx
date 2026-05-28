@@ -34,6 +34,10 @@ export function AttributePanel() {
             <Database className="h-3.5 w-3.5" />
             Database
           </TabsTrigger>
+          <TabsTrigger value="chat" className="gap-1.5">
+            <MessageSquare className="h-3.5 w-3.5" />
+            Chat
+          </TabsTrigger>
         </TabsList>
 
         <TabsContent value="layers" className="flex-1 overflow-hidden">
