@@ -84,7 +84,7 @@ function Index() {
             <span className="font-semibold text-foreground">{features.length}</span> features
           </span>
           <span className="hidden h-4 w-px bg-border sm:block" />
-          <span className="hidden sm:block">EPSG:4326 · CARTO Light basemap</span>
+          <MapClock />
           <span className="hidden h-4 w-px bg-border sm:block" />
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
