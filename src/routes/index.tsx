@@ -4,9 +4,25 @@ import { AttributePanel } from "@/components/gis/AttributePanel";
 import { FeatureTable } from "@/components/gis/FeatureTable";
 import { ImportGeoJSON } from "@/components/gis/ImportGeoJSON";
 import { useGisStore } from "@/lib/gis-store";
-import { Layers, CircleCheck as CheckCircle2 } from "lucide-react";
+import {
+  Layers,
+  CircleCheck as CheckCircle2,
+  User,
+  Settings,
+  LogIn,
+  LogOut,
+  ChevronDown,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 
 export const Route = createFileRoute("/")({
   component: Index,
