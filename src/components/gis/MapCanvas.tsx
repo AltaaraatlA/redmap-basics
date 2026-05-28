@@ -56,6 +56,15 @@ export function MapCanvas() {
       maxZoom: 19,
     }).addTo(map);
 
+    const emitCenter = () => {
+      const c = map.getCenter();
+      window.dispatchEvent(
+        new CustomEvent("gis:map-center", { detail: { lat: c.lat, lng: c.lng } }),
+      );
+    };
+    map.on("moveend", emitCenter);
+    emitCenter();
+
     map.pm.addControls({
       position: "topleft",
       drawMarker: true,

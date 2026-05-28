@@ -3,6 +3,7 @@ import { MapCanvas } from "@/components/gis/MapCanvas";
 import { AttributePanel } from "@/components/gis/AttributePanel";
 import { FeatureTable } from "@/components/gis/FeatureTable";
 import { ImportGeoJSON } from "@/components/gis/ImportGeoJSON";
+import { MapClock } from "@/components/gis/MapClock";
 import { useGisStore } from "@/lib/gis-store";
 import {
   Layers,
@@ -83,7 +84,7 @@ function Index() {
             <span className="font-semibold text-foreground">{features.length}</span> features
           </span>
           <span className="hidden h-4 w-px bg-border sm:block" />
-          <span className="hidden sm:block">EPSG:4326 · CARTO Light basemap</span>
+          <MapClock />
           <span className="hidden h-4 w-px bg-border sm:block" />
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
