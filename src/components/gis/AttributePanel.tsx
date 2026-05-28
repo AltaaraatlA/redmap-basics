@@ -4,7 +4,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Trash2, MapPin, Spline, Hexagon, Type as TypeIcon, Database, File as FileJson } from "lucide-react";
+import { Trash2, MapPin, Spline, Hexagon, Type as TypeIcon, Database, File as FileJson, Layers as LayersIcon } from "lucide-react";
 
 const typeIcon = {
   Point: MapPin,
