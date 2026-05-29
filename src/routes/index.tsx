@@ -128,9 +128,9 @@ function Index() {
 
       {/* Main */}
       <div className="flex min-h-0 flex-1">
-        <ResizablePanelGroup direction="horizontal" className="flex-1">
+        <ResizablePanelGroup orientation="horizontal" className="flex-1">
           <ResizablePanel defaultSize={75} minSize={30}>
-            <ResizablePanelGroup direction="vertical">
+            <ResizablePanelGroup orientation="vertical">
               <ResizablePanel defaultSize={70} minSize={20}>
                 <div className="relative h-full w-full">
                   <MapCanvas />
