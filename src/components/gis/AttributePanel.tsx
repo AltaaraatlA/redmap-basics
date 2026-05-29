@@ -22,21 +22,21 @@ export function AttributePanel() {
     <div className="flex h-full flex-col">
       <Tabs defaultValue="layers" className="flex h-full flex-col">
         <TabsList className="w-full justify-start rounded-none border-b border-border bg-card px-2">
-          <TabsTrigger value="layers" className="gap-1.5">
-            <LayersIcon className="h-3.5 w-3.5" />
-            Layers
+          <TabsTrigger value="layers" className="flex-1 gap-1.5 min-w-0">
+            <LayersIcon className="h-3.5 w-3.5 shrink-0" />
+            <span className="truncate">Layers</span>
           </TabsTrigger>
-          <TabsTrigger value="features" className="gap-1.5">
-            <FileJson className="h-3.5 w-3.5" />
-            Features
+          <TabsTrigger value="features" className="flex-1 gap-1.5 min-w-0">
+            <FileJson className="h-3.5 w-3.5 shrink-0" />
+            <span className="truncate">Features</span>
           </TabsTrigger>
-          <TabsTrigger value="database" className="gap-1.5">
-            <Database className="h-3.5 w-3.5" />
-            Database
+          <TabsTrigger value="database" className="flex-1 gap-1.5 min-w-0">
+            <Database className="h-3.5 w-3.5 shrink-0" />
+            <span className="truncate">Database</span>
           </TabsTrigger>
-          <TabsTrigger value="chat" className="gap-1.5">
-            <MessageSquare className="h-3.5 w-3.5" />
-            Chat
+          <TabsTrigger value="chat" className="flex-1 gap-1.5 min-w-0">
+            <MessageSquare className="h-3.5 w-3.5 shrink-0" />
+            <span className="truncate">Chat</span>
           </TabsTrigger>
         </TabsList>
 
