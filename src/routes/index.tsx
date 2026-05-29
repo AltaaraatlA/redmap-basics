@@ -6,6 +6,11 @@ import { ImportGeoJSON } from "@/components/gis/ImportGeoJSON";
 import { MapClock } from "@/components/gis/MapClock";
 import { useGisStore } from "@/lib/gis-store";
 import {
+  ResizableHandle,
+  ResizablePanel,
+  ResizablePanelGroup,
+} from "@/components/ui/resizable";
+import {
   Layers,
   CircleCheck as CheckCircle2,
   User,
@@ -123,15 +128,30 @@ function Index() {
 
       {/* Main */}
       <div className="flex min-h-0 flex-1">
-        <div className="relative flex min-h-0 flex-1 flex-col">
-          <div className="relative flex-1">
-            <MapCanvas />
-          </div>
-          <FeatureTable />
-        </div>
-        <aside className="hidden w-80 shrink-0 border-l border-border bg-card md:flex md:flex-col">
-          <AttributePanel />
-        </aside>
+        <ResizablePanelGroup orientation="horizontal" className="flex-1">
+          <ResizablePanel defaultSize={75} minSize={30}>
+            <ResizablePanelGroup orientation="vertical">
+              <ResizablePanel defaultSize={70} minSize={20}>
+                <div className="relative h-full w-full">
+                  <MapCanvas />
+                </div>
+              </ResizablePanel>
+              <ResizableHandle withHandle />
+              <ResizablePanel defaultSize={30} minSize={10} collapsible collapsedSize={4}>
+                <FeatureTable />
+              </ResizablePanel>
+            </ResizablePanelGroup>
+          </ResizablePanel>
+          <ResizableHandle withHandle />
+          <ResizablePanel
+            defaultSize={25}
+            minSize={15}
+            maxSize={50}
+            className="hidden border-l border-border bg-card md:block"
+          >
+            <AttributePanel />
+          </ResizablePanel>
+        </ResizablePanelGroup>
       </div>
     </div>
   );
