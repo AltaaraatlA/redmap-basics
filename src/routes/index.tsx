@@ -145,8 +145,8 @@ function Index() {
           <ResizableHandle withHandle />
           <ResizablePanel
             defaultSize={25}
-            minSize={15}
-            maxSize={50}
+            minSize={10}
+            maxSize={70}
             className="hidden border-l border-border bg-card md:block"
           >
             <AttributePanel />
