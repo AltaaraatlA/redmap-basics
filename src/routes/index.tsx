@@ -106,26 +106,41 @@ function Index() {
         </div>
         <div className="flex items-center gap-4 text-xs text-muted-foreground">
           <ImportGeoJSON />
-          <Button
-            variant="outline"
-            size="sm"
-            className="h-8 gap-1.5"
-            onClick={handleApprove}
-            disabled={features.length === 0}
-          >
-            <CheckCircle2 className="h-3.5 w-3.5" />
-            Approve
-          </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            className="h-8 gap-1.5 text-destructive hover:text-destructive"
-            onClick={handleReject}
-            disabled={features.length === 0}
-          >
-            <XCircle className="h-3.5 w-3.5" />
-            Reject
-          </Button>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant="outline"
+                size="sm"
+                className="h-8 gap-1.5"
+                disabled={features.length === 0}
+              >
+                <GitPullRequestArrow className="h-3.5 w-3.5" />
+                Review
+                <ChevronDown className="h-3 w-3 opacity-60" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-52">
+              <DropdownMenuItem className="gap-2 cursor-pointer" onClick={handleApprove}>
+                <CheckCircle2 className="h-4 w-4 text-primary" />
+                Approve
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                className="gap-2 cursor-pointer text-destructive focus:text-destructive"
+                onClick={handleReject}
+              >
+                <XCircle className="h-4 w-4" />
+                Reject
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem
+                className="gap-2 cursor-pointer"
+                onClick={() => setReturnOpen(true)}
+              >
+                <MessageSquare className="h-4 w-4" />
+                Return with comment
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
           <span>
             <span className="font-semibold text-foreground">{features.length}</span> features
           </span>
