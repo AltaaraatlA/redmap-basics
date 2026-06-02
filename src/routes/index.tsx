@@ -53,6 +53,14 @@ function Index() {
     toast.success(`Approved ${features.length} feature${features.length === 1 ? "" : "s"}`);
   };
 
+  const handleReject = () => {
+    if (features.length === 0) {
+      toast.error("No features to reject");
+      return;
+    }
+    toast.success(`Rejected ${features.length} feature${features.length === 1 ? "" : "s"}`);
+  };
+
   return (
     <div className="flex h-screen w-screen flex-col overflow-hidden bg-background text-foreground">
       {/* Top bar */}
