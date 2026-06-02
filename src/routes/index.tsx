@@ -1,23 +1,23 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
 import { MapCanvas } from "@/components/gis/MapCanvas";
 import { AttributePanel } from "@/components/gis/AttributePanel";
 import { FeatureTable } from "@/components/gis/FeatureTable";
 import { ImportGeoJSON } from "@/components/gis/ImportGeoJSON";
 import { MapClock } from "@/components/gis/MapClock";
 import { useGisStore } from "@/lib/gis-store";
-
+import {
+  ResizableHandle,
+  ResizablePanel,
+  ResizablePanelGroup,
+} from "@/components/ui/resizable";
 import {
   Layers,
   CircleCheck as CheckCircle2,
-  CircleX as XCircle,
-  MessageSquare,
   User,
   Settings,
   LogIn,
   LogOut,
   ChevronDown,
-  GitPullRequestArrow,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
@@ -29,15 +29,6 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import { Textarea } from "@/components/ui/textarea";
 
 export const Route = createFileRoute("/")({
   ssr: false,
@@ -56,35 +47,13 @@ export const Route = createFileRoute("/")({
 
 function Index() {
   const { features } = useGisStore();
-  const [returnOpen, setReturnOpen] = useState(false);
-  const [returnComment, setReturnComment] = useState("");
-
-  const guard = () => {
-    if (features.length === 0) {
-      toast.error("No features available");
-      return false;
-    }
-    return true;
-  };
 
   const handleApprove = () => {
-    if (!guard()) return;
-    toast.success(`Approved ${features.length} feature${features.length === 1 ? "" : "s"}`);
-  };
-
-  const handleReject = () => {
-    if (!guard()) return;
-    toast.success(`Rejected ${features.length} feature${features.length === 1 ? "" : "s"}`);
-  };
-
-  const handleSendReturn = () => {
-    if (!returnComment.trim()) {
-      toast.error("Please enter a comment");
+    if (features.length === 0) {
+      toast.error("No features to approve");
       return;
     }
-    toast.success(`Returned ${features.length} feature${features.length === 1 ? "" : "s"} with comment`);
-    setReturnComment("");
-    setReturnOpen(false);
+    toast.success(`Approved ${features.length} feature${features.length === 1 ? "" : "s"}`);
   };
 
   return (
@@ -106,41 +75,16 @@ function Index() {
         </div>
         <div className="flex items-center gap-4 text-xs text-muted-foreground">
           <ImportGeoJSON />
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button
-                variant="outline"
-                size="sm"
-                className="h-8 gap-1.5"
-                disabled={features.length === 0}
-              >
-                <GitPullRequestArrow className="h-3.5 w-3.5" />
-                Review
-                <ChevronDown className="h-3 w-3 opacity-60" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-52 z-[2000]">
-              <DropdownMenuItem className="gap-2 cursor-pointer" onClick={handleApprove}>
-                <CheckCircle2 className="h-4 w-4 text-primary" />
-                Approve
-              </DropdownMenuItem>
-              <DropdownMenuItem
-                className="gap-2 cursor-pointer text-destructive focus:text-destructive"
-                onClick={handleReject}
-              >
-                <XCircle className="h-4 w-4" />
-                Reject
-              </DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem
-                className="gap-2 cursor-pointer"
-                onClick={() => setReturnOpen(true)}
-              >
-                <MessageSquare className="h-4 w-4" />
-                Return with comment
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          <Button
+            variant="outline"
+            size="sm"
+            className="h-8 gap-1.5"
+            onClick={handleApprove}
+            disabled={features.length === 0}
+          >
+            <CheckCircle2 className="h-3.5 w-3.5" />
+            Approve
+          </Button>
           <span>
             <span className="font-semibold text-foreground">{features.length}</span> features
           </span>
@@ -159,7 +103,7 @@ function Index() {
                 <ChevronDown className="h-3 w-3 opacity-60" />
               </button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-44 z-[2000]">
+            <DropdownMenuContent align="end" className="w-44">
               <DropdownMenuItem className="gap-2 cursor-pointer">
                 <User className="h-4 w-4" />
                 Profile
@@ -183,42 +127,32 @@ function Index() {
       </header>
 
       {/* Main */}
-      <div className="flex min-h-0 flex-1">
-        <div className="flex min-w-0 flex-1 flex-col">
-          <div className="relative min-h-0 flex-1">
-            <MapCanvas />
-          </div>
-          <div className="h-72 shrink-0">
-            <FeatureTable />
-          </div>
-        </div>
-        <aside className="hidden w-96 shrink-0 border-l border-border bg-card md:block">
-          <AttributePanel />
-        </aside>
+      <div className="flex min-h-0 min-w-0 flex-1">
+        <ResizablePanelGroup orientation="horizontal" className="min-w-0 flex-1">
+          <ResizablePanel defaultSize={75} minSize={5} className="min-w-0">
+            <ResizablePanelGroup orientation="vertical" className="min-h-0">
+              <ResizablePanel defaultSize={70} minSize={20} className="min-h-0">
+                <div className="relative h-full w-full">
+                  <MapCanvas />
+                </div>
+              </ResizablePanel>
+              <ResizableHandle withHandle />
+              <ResizablePanel defaultSize={30} minSize={10} collapsible collapsedSize={4} className="min-h-0">
+                <FeatureTable />
+              </ResizablePanel>
+            </ResizablePanelGroup>
+          </ResizablePanel>
+          <ResizableHandle withHandle />
+          <ResizablePanel
+            defaultSize={25}
+            minSize={15}
+            maxSize={95}
+            className="hidden min-w-0 border-l border-border bg-card md:block"
+          >
+            <AttributePanel />
+          </ResizablePanel>
+        </ResizablePanelGroup>
       </div>
-
-      <Dialog open={returnOpen} onOpenChange={setReturnOpen}>
-        <DialogContent className="sm:max-w-md">
-          <DialogHeader>
-            <DialogTitle>Return with comment</DialogTitle>
-            <DialogDescription>
-              Add a note explaining why these features are being returned.
-            </DialogDescription>
-          </DialogHeader>
-          <Textarea
-            value={returnComment}
-            onChange={(e) => setReturnComment(e.target.value)}
-            placeholder="Type your comment..."
-            className="min-h-32"
-          />
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setReturnOpen(false)}>
-              Cancel
-            </Button>
-            <Button onClick={handleSendReturn}>Send</Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
     </div>
   );
 }
