@@ -5,11 +5,7 @@ import { FeatureTable } from "@/components/gis/FeatureTable";
 import { ImportGeoJSON } from "@/components/gis/ImportGeoJSON";
 import { MapClock } from "@/components/gis/MapClock";
 import { useGisStore } from "@/lib/gis-store";
-import {
-  ResizableHandle,
-  ResizablePanel,
-  ResizablePanelGroup,
-} from "@/components/ui/resizable";
+
 import {
   Layers,
   CircleCheck as CheckCircle2,
