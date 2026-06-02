@@ -197,6 +197,28 @@ function Index() {
         </aside>
       </div>
 
+      <Dialog open={returnOpen} onOpenChange={setReturnOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Return with comment</DialogTitle>
+            <DialogDescription>
+              Add a note explaining why these features are being returned.
+            </DialogDescription>
+          </DialogHeader>
+          <Textarea
+            value={returnComment}
+            onChange={(e) => setReturnComment(e.target.value)}
+            placeholder="Type your comment..."
+            className="min-h-32"
+          />
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setReturnOpen(false)}>
+              Cancel
+            </Button>
+            <Button onClick={handleSendReturn}>Send</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
