@@ -127,32 +127,20 @@ function Index() {
       </header>
 
       {/* Main */}
-      <div className="flex min-h-0 min-w-0 flex-1">
-        <ResizablePanelGroup orientation="horizontal" className="min-w-0 flex-1">
-          <ResizablePanel defaultSize={75} minSize={5} className="min-w-0">
-            <ResizablePanelGroup orientation="vertical" className="min-h-0">
-              <ResizablePanel defaultSize={70} minSize={20} className="min-h-0">
-                <div className="relative h-full w-full">
-                  <MapCanvas />
-                </div>
-              </ResizablePanel>
-              <ResizableHandle withHandle />
-              <ResizablePanel defaultSize={30} minSize={10} collapsible collapsedSize={4} className="min-h-0">
-                <FeatureTable />
-              </ResizablePanel>
-            </ResizablePanelGroup>
-          </ResizablePanel>
-          <ResizableHandle withHandle />
-          <ResizablePanel
-            defaultSize={25}
-            minSize={15}
-            maxSize={95}
-            className="hidden min-w-0 border-l border-border bg-card md:block"
-          >
-            <AttributePanel />
-          </ResizablePanel>
-        </ResizablePanelGroup>
+      <div className="flex min-h-0 flex-1">
+        <div className="flex min-w-0 flex-1 flex-col">
+          <div className="relative min-h-0 flex-1">
+            <MapCanvas />
+          </div>
+          <div className="h-72 shrink-0">
+            <FeatureTable />
+          </div>
+        </div>
+        <aside className="hidden w-96 shrink-0 border-l border-border bg-card md:block">
+          <AttributePanel />
+        </aside>
       </div>
+
     </div>
   );
 }
