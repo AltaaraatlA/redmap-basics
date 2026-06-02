@@ -90,6 +90,16 @@ function Index() {
             <CheckCircle2 className="h-3.5 w-3.5" />
             Approve
           </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            className="h-8 gap-1.5 text-destructive hover:text-destructive"
+            onClick={handleReject}
+            disabled={features.length === 0}
+          >
+            <XCircle className="h-3.5 w-3.5" />
+            Reject
+          </Button>
           <span>
             <span className="font-semibold text-foreground">{features.length}</span> features
           </span>
