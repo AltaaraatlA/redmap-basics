@@ -9,6 +9,7 @@ import { useGisStore } from "@/lib/gis-store";
 import {
   Layers,
   CircleCheck as CheckCircle2,
+  CircleX as XCircle,
   User,
   Settings,
   LogIn,
