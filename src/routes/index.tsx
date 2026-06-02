@@ -9,6 +9,7 @@ import { useGisStore } from "@/lib/gis-store";
 import {
   Layers,
   CircleCheck as CheckCircle2,
+  CircleX as XCircle,
   User,
   Settings,
   LogIn,
@@ -52,6 +53,14 @@ function Index() {
     toast.success(`Approved ${features.length} feature${features.length === 1 ? "" : "s"}`);
   };
 
+  const handleReject = () => {
+    if (features.length === 0) {
+      toast.error("No features to reject");
+      return;
+    }
+    toast.success(`Rejected ${features.length} feature${features.length === 1 ? "" : "s"}`);
+  };
+
   return (
     <div className="flex h-screen w-screen flex-col overflow-hidden bg-background text-foreground">
       {/* Top bar */}
@@ -80,6 +89,16 @@ function Index() {
           >
             <CheckCircle2 className="h-3.5 w-3.5" />
             Approve
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            className="h-8 gap-1.5 text-destructive hover:text-destructive"
+            onClick={handleReject}
+            disabled={features.length === 0}
+          >
+            <XCircle className="h-3.5 w-3.5" />
+            Reject
           </Button>
           <span>
             <span className="font-semibold text-foreground">{features.length}</span> features
