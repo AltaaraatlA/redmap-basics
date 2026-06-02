@@ -22,9 +22,6 @@ export function FeatureTable() {
             {features.length}
           </span>
         </div>
-        <span className="text-[10px] uppercase tracking-wider text-muted-foreground">
-          Drag the top edge to resize
-        </span>
       </div>
       <div className="flex-1 overflow-auto">
         {features.length === 0 ? (
