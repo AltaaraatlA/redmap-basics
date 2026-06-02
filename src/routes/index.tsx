@@ -119,7 +119,7 @@ function Index() {
                 <ChevronDown className="h-3 w-3 opacity-60" />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-52">
+            <DropdownMenuContent align="end" className="w-52 z-[2000]">
               <DropdownMenuItem className="gap-2 cursor-pointer" onClick={handleApprove}>
                 <CheckCircle2 className="h-4 w-4 text-primary" />
                 Approve
@@ -159,7 +159,7 @@ function Index() {
                 <ChevronDown className="h-3 w-3 opacity-60" />
               </button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-44">
+            <DropdownMenuContent align="end" className="w-44 z-[2000]">
               <DropdownMenuItem className="gap-2 cursor-pointer">
                 <User className="h-4 w-4" />
                 Profile
