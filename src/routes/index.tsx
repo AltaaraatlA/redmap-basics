@@ -56,21 +56,35 @@ export const Route = createFileRoute("/")({
 
 function Index() {
   const { features } = useGisStore();
+  const [returnOpen, setReturnOpen] = useState(false);
+  const [returnComment, setReturnComment] = useState("");
+
+  const guard = () => {
+    if (features.length === 0) {
+      toast.error("No features available");
+      return false;
+    }
+    return true;
+  };
 
   const handleApprove = () => {
-    if (features.length === 0) {
-      toast.error("No features to approve");
-      return;
-    }
+    if (!guard()) return;
     toast.success(`Approved ${features.length} feature${features.length === 1 ? "" : "s"}`);
   };
 
   const handleReject = () => {
-    if (features.length === 0) {
-      toast.error("No features to reject");
+    if (!guard()) return;
+    toast.success(`Rejected ${features.length} feature${features.length === 1 ? "" : "s"}`);
+  };
+
+  const handleSendReturn = () => {
+    if (!returnComment.trim()) {
+      toast.error("Please enter a comment");
       return;
     }
-    toast.success(`Rejected ${features.length} feature${features.length === 1 ? "" : "s"}`);
+    toast.success(`Returned ${features.length} feature${features.length === 1 ? "" : "s"} with comment`);
+    setReturnComment("");
+    setReturnOpen(false);
   };
 
   return (
