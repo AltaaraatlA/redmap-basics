@@ -35,7 +35,7 @@ export const Route = createFileRoute("/")({
   component: Index,
   head: () => ({
     meta: [
-      { title: "Crimson GIS — Web Mapping Workspace" },
+      { title: "Metapolis — Web Mapping Workspace" }, // ИЗМЕНЕНИЕ: Название в заголовке вкладки
       {
         name: "description",
         content:
@@ -65,8 +65,9 @@ function Index() {
             <Layers className="h-4 w-4" />
           </div>
           <div>
+            {/* ИЗМЕНЕНИЕ: Название в интерфейсе */}
             <h1 className="text-base font-bold leading-none tracking-tight">
-              Crimson<span className="text-primary">GIS</span>
+              Metapolis
             </h1>
             <p className="text-[10.5px] uppercase tracking-[0.18em] text-muted-foreground">
               Web Mapping Workspace
@@ -103,7 +104,8 @@ function Index() {
                 <ChevronDown className="h-3 w-3 opacity-60" />
               </button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-44">
+            {/* ИЗМЕНЕНИЕ: Добавлен z-[1200], чтобы меню было поверх всех панелей */}
+            <DropdownMenuContent align="end" className="w-44 z-[1200]">
               <DropdownMenuItem className="gap-2 cursor-pointer">
                 <User className="h-4 w-4" />
                 Profile
