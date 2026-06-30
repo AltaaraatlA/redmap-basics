@@ -5,7 +5,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Trash2, MapPin, Spline, Hexagon, Type as TypeIcon, Database, File as FileJson, Layers as LayersIcon, MessageSquare, GripVertical } from "lucide-react";
+import { Trash2, MapPin, Spline, Hexagon, Type as TypeIcon, Database, File as FileJson, Layers as LayersIcon, MessageSquare } from "lucide-react";
 
 const typeIcon = {
   Point: MapPin,
@@ -19,8 +19,8 @@ export function AttributePanel() {
   const f = features.find((x) => x.id === selectedId);
   const Icon = f ? typeIcon[f.type] : null;
 
-  // Логика изменения ширины
-  const [width, setWidth] = useState(450); // Начальная ширина
+  // --- Логика изменения ширины ---
+  const [width, setWidth] = useState(450); // Начальная ширина (уже шире)
   const [isResizing, setIsResizing] = useState(false);
 
   useEffect(() => {
@@ -28,7 +28,7 @@ export function AttributePanel() {
       if (!isResizing) return;
 
       const newWidth = window.innerWidth - e.clientX;
-      // Убираем верхнее ограничение, оставляем только нижнее (минимум 250px)
+      // Минимальная ширина 250px, максимальной нет
       if (newWidth > 250) {
         setWidth(newWidth);
       }
@@ -37,15 +37,15 @@ export function AttributePanel() {
     const handleMouseUp = () => {
       if (isResizing) {
         setIsResizing(false);
-        document.body.style.cursor = 'default'; // Возвращаем курсор
-        document.body.style.userSelect = 'auto'; // Возвращаем выделение текста
+        document.body.style.cursor = 'default';
+        document.body.style.userSelect = 'auto';
       }
     };
 
     const handleMouseDown = () => {
       setIsResizing(true);
-      document.body.style.cursor = 'ew-resize'; // Меняем курсор globally для удобства
-      document.body.style.userSelect = 'none';  // Запрещаем выделение текста при драге
+      document.body.style.cursor = 'ew-resize';
+      document.body.style.userSelect = 'none';
     };
 
     if (isResizing) {
@@ -58,22 +58,24 @@ export function AttributePanel() {
       window.removeEventListener("mouseup", handleMouseUp);
     };
   }, [isResizing]);
+  // ------------------------------
 
   return (
-    // z-50 чтобы перекрывать карту, shrink-0 чтобы не сжималась родителем
+    // ИЗМЕНЕНИЕ ЗДЕСЬ:
+    // 1. Заменено на 'fixed top-0 right-0 bottom-0' - теперь панель anchored к экрану, а не к родителю
+    // 2. z-[1100] - чтобы перекрывать FeatureTable (z-[1000])
     <div
-      className="flex h-full shrink-0 bg-background border-l border-border relative z-50"
-      style={{ width: `${width}px`, minWidth: '300px', maxWidth: '100vw' }}
+      className="fixed top-0 right-0 bottom-0 flex bg-background border-l border-border shadow-xl z-[1100]"
+      style={{ width: `${width}px`, minWidth: '300px' }}
     >
-      {/* Визуальная рукоятка для изменения размера */}
+      {/* Ручка для изменения размера */}
       <div
-        className="absolute left-0 top-0 bottom-0 w-[4px] cursor-ew-resize hover:bg-primary/80 z-[60] transition-colors group"
+        className="absolute left-0 top-0 bottom-0 w-[4px] cursor-ew-resize hover:bg-primary/80 z-[1200] transition-colors group"
         onMouseDown={(e) => {
-          e.preventDefault(); // Предотвращаем выделение текста
+          e.preventDefault();
           setIsResizing(true);
         }}
       >
-        {/* Визуальная полоска, которая появляется/подсвечивается */}
         <div className="absolute left-0 top-0 bottom-0 w-[1px] bg-border group-hover:bg-primary" />
       </div>
 
