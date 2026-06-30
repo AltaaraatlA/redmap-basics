@@ -50,15 +50,14 @@ export function MapCanvas() {
       center: [55.752004, 37.617734],
       zoom: 12,
       zoomControl: true,
-      attributionControl: false, // <--- ОТКЛЮЧАЕМ БЛОК АТРИБУЦИИ ЗДЕСЬ
+      attributionControl: false, // Атрибуция скрыта по вашему запросу
     });
-    L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png", {
-      attribution: "&copy; OpenStreetMap &copy; CARTO", // Текст все равно передаем на случай, если включите вручную
+
+    // ИЗМЕНЕНИЕ: Классическая подложка OpenStreetMap
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      attribution: "&copy; OpenStreetMap contributors",
       maxZoom: 19,
     }).addTo(map);
-
-    // Опционально: если нужно скрыть через CSS (например, чтобы оставить в DOM, но не показывать)
-    // document.querySelector('.leaflet-control-attribution')?.setAttribute('style', 'display: none');
 
     const emitCenter = () => {
       const c = map.getCenter();
