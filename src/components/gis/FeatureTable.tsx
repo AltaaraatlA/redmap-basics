@@ -14,7 +14,8 @@ export function FeatureTable() {
   const { features, selectedId } = useGisStore();
 
   return (
-    <div className="pointer-events-auto flex h-full flex-col overflow-hidden border-t border-border bg-card/95 backdrop-blur">
+    // ИЗМЕНЕНИЕ: Добавлен z-[1000], чтобы таблица перекрывала элементы управления картой (включая копирайт)
+    <div className="pointer-events-auto flex h-full flex-col overflow-hidden border-t border-border bg-card/95 backdrop-blur z-[1000]">
       <div className="flex h-10 shrink-0 items-center justify-between border-b border-border bg-card px-4">
         <div className="flex items-center gap-2">
           <span className="text-xs font-semibold uppercase tracking-wider">Feature Table</span>
