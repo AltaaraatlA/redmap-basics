@@ -5,7 +5,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Trash2, MapPin, Spline, Hexagon, Type as TypeIcon, Database, File as FileJson, Layers as LayersIcon, MessageSquare } from "lucide-react";
+import { Trash2, MapPin, Spline, Hexagon, Type as TypeIcon, Database, File as FileJson, Layers as LayersIcon, MessageSquare, GripVertical } from "lucide-react";
 
 const typeIcon = {
   Point: MapPin,
@@ -19,26 +19,33 @@ export function AttributePanel() {
   const f = features.find((x) => x.id === selectedId);
   const Icon = f ? typeIcon[f.type] : null;
 
-  // --- Логика изменения ширины ---
-  const [width, setWidth] = useState(450); // Начальная ширина (сразу шире)
+  // Логика изменения ширины
+  const [width, setWidth] = useState(450); // Начальная ширина
   const [isResizing, setIsResizing] = useState(false);
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
       if (!isResizing) return;
 
-      // Вычисляем новую ширину: ширина окна - позиция курсора X
-      // Так как панель справа, тянем влево, чтобы увеличить
       const newWidth = window.innerWidth - e.clientX;
-
-      // Ограничиваем только минимальной шириной, максимальной нет ("безлимитно")
+      // Убираем верхнее ограничение, оставляем только нижнее (минимум 250px)
       if (newWidth > 250) {
         setWidth(newWidth);
       }
     };
 
     const handleMouseUp = () => {
-      setIsResizing(false);
+      if (isResizing) {
+        setIsResizing(false);
+        document.body.style.cursor = 'default'; // Возвращаем курсор
+        document.body.style.userSelect = 'auto'; // Возвращаем выделение текста
+      }
+    };
+
+    const handleMouseDown = () => {
+      setIsResizing(true);
+      document.body.style.cursor = 'ew-resize'; // Меняем курсор globally для удобства
+      document.body.style.userSelect = 'none';  // Запрещаем выделение текста при драге
     };
 
     if (isResizing) {
@@ -51,22 +58,26 @@ export function AttributePanel() {
       window.removeEventListener("mouseup", handleMouseUp);
     };
   }, [isResizing]);
-  // ------------------------------
 
   return (
-    // Контейнер с динамической шириной и border-left для отделения от карты
+    // z-50 чтобы перекрывать карту, shrink-0 чтобы не сжималась родителем
     <div
-      className="flex h-full shrink-0 bg-background border-l border-border relative"
-      style={{ width: `${width}px`, minWidth: '300px' }}
+      className="flex h-full shrink-0 bg-background border-l border-border relative z-50"
+      style={{ width: `${width}px`, minWidth: '300px', maxWidth: '100vw' }}
     >
-      {/* Невидимая область для перетаскивания (левый край) */}
+      {/* Визуальная рукоятка для изменения размера */}
       <div
-        className="absolute left-0 top-0 bottom-0 w-1 cursor-ew-resize hover:bg-primary/50 z-50"
-        onMouseDown={() => setIsResizing(true)}
-      />
+        className="absolute left-0 top-0 bottom-0 w-[4px] cursor-ew-resize hover:bg-primary/80 z-[60] transition-colors group"
+        onMouseDown={(e) => {
+          e.preventDefault(); // Предотвращаем выделение текста
+          setIsResizing(true);
+        }}
+      >
+        {/* Визуальная полоска, которая появляется/подсвечивается */}
+        <div className="absolute left-0 top-0 bottom-0 w-[1px] bg-border group-hover:bg-primary" />
+      </div>
 
-      {/* Основной контент */}
-      <div className="flex h-full flex-col w-full">
+      <div className="flex h-full flex-col w-full overflow-hidden">
         <Tabs defaultValue="layers" className="flex h-full flex-col">
           <TabsList className="w-full justify-start rounded-none border-b border-border bg-card px-2">
             <TabsTrigger value="layers" className="flex-1 gap-1.5 min-w-0">
@@ -87,7 +98,7 @@ export function AttributePanel() {
             </TabsTrigger>
           </TabsList>
 
-          <TabsContent value="layers" className="flex-1 overflow-hidden">
+          <TabsContent value="layers" className="flex-1 overflow-hidden m-0">
             <div className="flex h-full flex-col items-center justify-center p-6 text-center text-sm text-muted-foreground">
               <LayersIcon className="mb-3 h-10 w-10 text-muted-foreground/50" />
               <p className="font-medium text-foreground">Layers</p>
@@ -96,10 +107,10 @@ export function AttributePanel() {
             </div>
           </TabsContent>
 
-          <TabsContent value="features" className="flex-1 overflow-hidden">
+          <TabsContent value="features" className="flex-1 overflow-hidden m-0">
             {f ? (
               <div className="flex h-full flex-col">
-                <div className="flex items-center gap-2 border-b border-border bg-card px-4 py-3">
+                <div className="flex items-center gap-2 border-b border-border bg-card px-4 py-3 shrink-0">
                   <div className="flex h-8 w-8 items-center justify-center rounded-md bg-primary text-primary-foreground">
                     {Icon && <Icon className="h-4 w-4" />}
                   </div>
@@ -111,7 +122,7 @@ export function AttributePanel() {
                   </div>
                 </div>
 
-                <div className="space-y-4 overflow-y-auto p-4">
+                <div className="space-y-4 overflow-y-auto p-4 flex-1">
                   <div className="space-y-1.5">
                     <Label className="text-xs uppercase tracking-wider text-muted-foreground">Name</Label>
                     <Input
@@ -147,7 +158,7 @@ export function AttributePanel() {
                   </div>
                 </div>
 
-                <div className="border-t border-border p-3">
+                <div className="border-t border-border p-3 shrink-0">
                   <Button
                     variant="destructive"
                     className="w-full"
@@ -167,7 +178,7 @@ export function AttributePanel() {
             )}
           </TabsContent>
 
-          <TabsContent value="database" className="flex-1 overflow-hidden">
+          <TabsContent value="database" className="flex-1 overflow-hidden m-0">
             <div className="flex h-full flex-col items-center justify-center p-6 text-center text-sm text-muted-foreground">
               <Database className="mb-3 h-10 w-10 text-muted-foreground/50" />
               <p className="font-medium text-foreground">Database Connection</p>
@@ -176,7 +187,7 @@ export function AttributePanel() {
             </div>
           </TabsContent>
 
-          <TabsContent value="chat" className="flex-1 overflow-hidden">
+          <TabsContent value="chat" className="flex-1 overflow-hidden m-0">
             <div className="flex h-full flex-col items-center justify-center p-6 text-center text-sm text-muted-foreground">
               <MessageSquare className="mb-3 h-10 w-10 text-muted-foreground/50" />
               <p className="font-medium text-foreground">Chat</p>
