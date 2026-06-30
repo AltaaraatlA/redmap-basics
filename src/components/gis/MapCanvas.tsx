@@ -50,11 +50,15 @@ export function MapCanvas() {
       center: [40.7128, -74.006],
       zoom: 12,
       zoomControl: true,
+      attributionControl: false, // <--- ОТКЛЮЧАЕМ БЛОК АТРИБУЦИИ ЗДЕСЬ
     });
     L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png", {
-      attribution: "&copy; OpenStreetMap &copy; CARTO",
+      attribution: "&copy; OpenStreetMap &copy; CARTO", // Текст все равно передаем на случай, если включите вручную
       maxZoom: 19,
     }).addTo(map);
+
+    // Опционально: если нужно скрыть через CSS (например, чтобы оставить в DOM, но не показывать)
+    // document.querySelector('.leaflet-control-attribution')?.setAttribute('style', 'display: none');
 
     const emitCenter = () => {
       const c = map.getCenter();
@@ -222,6 +226,5 @@ export function MapCanvas() {
     };
   }, []);
 
-  // ИЗМЕНЕНИЕ ЗДЕСЬ: Увеличиваем высоту контейнера карты
-  return <div ref={containerRef} className="absolute inset-x-0 top-0 h-[calc(100%+60px)]" />;
+  return <div ref={containerRef} className="absolute inset-0" />;
 }
