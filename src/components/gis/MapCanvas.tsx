@@ -14,23 +14,28 @@ L.Icon.Default.mergeOptions({
 const RED = "#dc2626";
 const RED_DEEP = "#991b1b";
 
-// ИСПРАВЛЕНИЕ: CSS для повышения Z-Index кнопок Geoman, чтобы они были выше AttributePanel (1100)
+// --- ИСПРАВЛЕНИЕ Z-INDEX ---
+// Устанавливаем Z-Index выше, чем у AttributePanel (1100) и Header (1200)
+const GEOMAN_Z_INDEX = 1400;
+
 const GEOMAN_FIX_STYLE = `
-  .leaflet-control-container,
-  .leaflet-top, .leaflet-bottom,
-  .leaflet-right, .leaflet-left {
-    z-index: 1300 !important;
+  /* Повышаем индекс контейнеров контролов */
+  .leaflet-control-container {
+    z-index: ${GEOMAN_Z_INDEX} !important;
   }
-  /* Повышаем z-index для всплывающих тултипов и контролов */
-  .leaflet-bar a,
-  .leaflet-bar .leaflet-control-zoom-in,
-  .leaflet-bar .leaflet-control-zoom-out,
-  .leaflet-draw-tooltip,
-  .leaflet-pm-actions-container,
-  .leaflet-control-attribution {
-    z-index: 1301 !important;
+
+  /* Повышаем индекс самих кнопок и меню Geoman */
+  .leaflet-pm-toolbar,
+  .leaflet-pm-actions-container {
+    z-index: ${GEOMAN_Z_INDEX} !important;
+  }
+
+  /* Поправка для тултипов */
+  .leaflet-draw-tooltip {
+    z-index: ${GEOMAN_Z_INDEX + 1} !important;
   }
 `;
+// ----------------------------
 
 const featureStyle = (selected: boolean) => ({
   color: selected ? RED_DEEP : RED,
@@ -65,7 +70,7 @@ export function MapCanvas() {
   useEffect(() => {
     if (!containerRef.current || mapRef.current) return;
 
-    // Внедряем стили для исправления Z-Index
+    // Внедряем стили
     const styleId = "geoman-z-fix";
     if (!document.getElementById(styleId)) {
       const style = document.createElement("style");
@@ -95,7 +100,7 @@ export function MapCanvas() {
     map.on("moveend", emitCenter);
     emitCenter();
 
-    // --- Geoman Controls Configuration ---
+    // --- Geoman Controls ---
     map.pm.addControls({
       position: "topleft",
       drawMarker: true,
@@ -114,9 +119,18 @@ export function MapCanvas() {
     map.pm.setLang("en");
     map.pm.setPathOptions(featureStyle(false));
 
-    // --- Geoman Events ---
+    // --- ИСПРАВЛЕНИЕ: Отключаем автоматическую отмену при клике ---
+    // Это предотвращает исчезновение кнопок, если Leaflet решит, что клик был "чужим"
+    map.pm.Draw.setEditOptions({
+      allowSelfIntersection: false,
+      snappable: true,
+      snapDistance: 20,
+    });
 
-    // 1. Обработка создания (Create)
+    // Отключаем поведение, когда клик по карте отменяет текущее действие (если это нужно)
+    // Но лучше оставить строгий контроль через кнопки Cancel в Geoman
+    (map.pm as any).disableGlobalEditMode(); // Переключатель режимов
+
     map.on("pm:create", (e: { shape: string; layer: L.Layer }) => {
       const layer = e.layer as L.Layer & { toGeoJSON: () => GeoJSON.Feature; _latlng?: L.LatLng };
       const shape = e.shape;
@@ -147,39 +161,8 @@ export function MapCanvas() {
       gisStore.select(id);
     });
 
-    // 2. ИСПРАВЛЕНИЕ: Предотвращаем прерывание редактирования кликом по UI
-    // Geoman по умолчанию отменяет рисование, если кликнуть по контейнеру карты (event.target === map container)
-    // Мы проверяем, если клик был по элементу с классом, указывающим на UI (наши панели), игнорируем отмену.
-    map.on("pm:drawstart", () => {
-      const originalStop = (L.DomEvent as any).stop;
-
-      // Временно переопределяем логику остановки событий во время рисования
-      const handleMapClick = (ev: any) => {
-        // Если кликнули по нашему UI (панели, хедеру и т.д.), не даем Leaflet "увидеть" его как клик по карте
-        const clickedElement = ev.originalEvent.target as HTMLElement;
-
-        // Список классов ваших панелей (можете расширить, если что-то еще перекрывает)
-        const isUIClick = clickedElement.closest(
-          '[class*="bg-card"], [class*="AttributePanel"], header, [class*="FeatureTable"], [class*="MapClock"]'
-        );
-
-        if (isUIClick) {
-          L.DomEvent.stopPropagation(ev);
-          return;
-        }
-      };
-
-      map.on("click", handleMapClick);
-
-      // Удаляем слушатель, когда рисование закончилось
-      map.once("pm:drawend", () => {
-        map.off("click", handleMapClick);
-      });
-    });
-
     mapRef.current = map;
 
-    // Force invalidate size after initialization
     setTimeout(() => {
       map.invalidateSize();
     }, 100);
