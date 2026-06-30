@@ -42,13 +42,18 @@ export function MapClock() {
   const tzLabel = tz.split("/").pop()?.replace(/_/g, " ") ?? tz;
 
   return (
-    <span className="hidden font-mono text-foreground sm:inline">
-      <span className="text-muted-foreground">Local </span>
-      <span className="font-semibold">{local}</span>
-      <span className="ml-1 text-muted-foreground">({tzLabel})</span>
-      <span className="mx-2 text-border">·</span>
-      <span className="text-muted-foreground">MSK </span>
-      <span className="font-semibold">{moscow}</span>
-    </span>
+    // ИЗМЕНЕНИЯ:
+    // 1. Добавлен div-обертка с z-[1200] (чтобы быть выше AttributePanel)
+    // 2. Добавлен bg-background/95 и border-b для фона и визуального разделения
+    <div className="relative z-[1200] w-full border-b bg-background/95 backdrop-blur px-6 py-3 flex items-center justify-between">
+      <span className="hidden font-mono text-foreground sm:inline">
+        <span className="text-muted-foreground">Local </span>
+        <span className="font-semibold">{local}</span>
+        <span className="ml-1 text-muted-foreground">({tzLabel})</span>
+        <span className="mx-2 text-border">·</span>
+        <span className="text-muted-foreground">MSK </span>
+        <span className="font-semibold">{moscow}</span>
+      </span>
+    </div>
   );
 }
