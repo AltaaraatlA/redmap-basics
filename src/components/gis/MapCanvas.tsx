@@ -50,10 +50,9 @@ export function MapCanvas() {
       center: [55.752004, 37.617734],
       zoom: 12,
       zoomControl: true,
-      attributionControl: false, // Атрибуция скрыта по вашему запросу
+      attributionControl: false,
     });
 
-    // ИЗМЕНЕНИЕ: Классическая подложка OpenStreetMap
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
       attribution: "&copy; OpenStreetMap contributors",
       maxZoom: 19,
@@ -102,7 +101,6 @@ export function MapCanvas() {
           ? ((layer as unknown as { pm: { getText: () => string } }).pm?.getText?.() ?? "Label")
           : `${type} ${gisStore.getSnapshot().features.length + 1}`;
 
-      // Remove geoman's temp layer; we render from store
       map.removeLayer(layer);
 
       gisStore.add({
@@ -118,10 +116,28 @@ export function MapCanvas() {
     });
 
     mapRef.current = map;
+
+    // ИСПРАВЛЕНИЕ 1: Принудительно обновляем размер карты после инициализации
+    // Это решает проблему "серых квадратов", если контейнер еще не отрисовался до конца
+    setTimeout(() => {
+      map.invalidateSize();
+    }, 100);
+
     return () => {
       map.remove();
       mapRef.current = null;
     };
+  }, []);
+
+  // ИСПРАВЛЕНИЕ 2: Слушаем изменение размера окна, чтобы карта перерисовывалась
+  useEffect(() => {
+    const handleResize = () => {
+      if (mapRef.current) {
+        mapRef.current.invalidateSize();
+      }
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   // sync store -> layers
@@ -170,7 +186,6 @@ export function MapCanvas() {
         L.DomEvent.stopPropagation(ev);
         gisStore.select(f.id);
       });
-      // enable per-layer editing via geoman
       layer.on("pm:edit", () => {
         const gj =
           "toGeoJSON" in layer
@@ -206,7 +221,6 @@ export function MapCanvas() {
 
     const onFit = (ev: Event) => {
       const ids = (ev as CustomEvent<string[]>).detail;
-      // wait for the feature->layer sync effect to run
       setTimeout(() => {
         const layers = ids
           .map((id) => layersRef.current.get(id))
@@ -225,5 +239,6 @@ export function MapCanvas() {
     };
   }, []);
 
-  return <div ref={containerRef} className="absolute inset-0" />;
+  // ИСПРАВЛЕНИЕ 3: Добавлен z-0, чтобы карта была в правильном слое
+  return <div ref={containerRef} className="absolute inset-0 z-0" />;
 }
