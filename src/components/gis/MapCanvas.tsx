@@ -31,7 +31,7 @@ function makeLabelIcon(text: string, selected: boolean) {
       padding:3px 8px;border-radius:6px;
       font:600 12px/1 'Inter',sans-serif;
       box-shadow:0 2px 8px rgba(0,0,0,.15);white-space:nowrap;
-    ">${text.replace(/[<>&]/g, (c) => ({ "<": "&lt;", ">": "&gt;", "&": "&amp;" }[c]!))}</div>`,
+    ">${text.replace(/[<>&]/g, (c) => ({ "<": "<", ">": ">", "&": "&" }[c]!))}</div>`,
     iconSize: undefined as unknown as L.PointTuple,
     iconAnchor: [0, 0],
   });
@@ -222,5 +222,6 @@ export function MapCanvas() {
     };
   }, []);
 
-  return <div ref={containerRef} className="absolute inset-0" />;
+  // ИЗМЕНЕНИЕ ЗДЕСЬ: Увеличиваем высоту контейнера карты
+  return <div ref={containerRef} className="absolute inset-x-0 top-0 h-[calc(100%+60px)]" />;
 }
