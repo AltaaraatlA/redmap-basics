@@ -47,7 +47,7 @@ export function MapCanvas() {
   useEffect(() => {
     if (!containerRef.current || mapRef.current) return;
     const map = L.map(containerRef.current, {
-      center: [40.7128, -74.006],
+      center: [55.752004, 37.617734],
       zoom: 12,
       zoomControl: true,
       attributionControl: false, // <--- ОТКЛЮЧАЕМ БЛОК АТРИБУЦИИ ЗДЕСЬ
