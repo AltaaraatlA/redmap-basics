@@ -65,7 +65,7 @@ export function AttributePanel() {
     // 1. Заменено на 'fixed top-0 right-0 bottom-0' - теперь панель anchored к экрану, а не к родителю
     // 2. z-[1100] - чтобы перекрывать FeatureTable (z-[1000])
     <div
-      className="fixed top-0 right-0 bottom-0 flex bg-background border-l border-border shadow-xl z-[1100]"
+      className="fixed top-16 right-0 bottom-0 flex bg-background border-l border-border shadow-xl z-[1100]"
       style={{ width: `${width}px`, minWidth: '300px' }}
     >
       {/* Ручка для изменения размера */}
