@@ -129,15 +129,16 @@ function Index() {
       {/* Main */}
       <div className="flex min-h-0 min-w-0 flex-1">
         <ResizablePanelGroup orientation="horizontal" className="min-w-0 flex-1">
-          <ResizablePanel defaultSize={75} minSize={5} className="min-w-0">
-            <ResizablePanelGroup orientation="vertical" className="min-h-0">
-              <ResizablePanel defaultSize={70} minSize={20} className="min-h-0">
-                <div className="relative h-full w-full">
-                  <MapCanvas />
-                </div>
-              </ResizablePanel>
-              <ResizableHandle withHandle />
-              <ResizablePanel defaultSize={30} minSize={10} collapsible collapsedSize={4} className="min-h-0">
+          <ResizablePanel defaultSize={75} minSize={5} className="relative min-w-0">
+            {/* Map spans the full left column and sits behind the feature table */}
+            <div className="absolute inset-0 z-0">
+              <MapCanvas />
+            </div>
+            {/* Feature table overlays the bottom of the map */}
+            <ResizablePanelGroup orientation="vertical" className="pointer-events-none absolute inset-0 z-10 min-h-0">
+              <ResizablePanel defaultSize={70} minSize={20} className="pointer-events-none min-h-0" />
+              <ResizableHandle withHandle className="pointer-events-auto" />
+              <ResizablePanel defaultSize={30} minSize={10} collapsible collapsedSize={4} className="pointer-events-auto min-h-0">
                 <FeatureTable />
               </ResizablePanel>
             </ResizablePanelGroup>
