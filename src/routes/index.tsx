@@ -129,7 +129,7 @@ function Index() {
       {/* Main */}
       <div className="flex min-h-0 min-w-0 flex-1">
         <ResizablePanelGroup orientation="horizontal" className="min-w-0 flex-1">
-          <ResizablePanel defaultSize={75} minSize={5} className="min-w-0">
+          <ResizablePanel defaultSize={60} minSize={5} className="min-w-0">
             <ResizablePanelGroup orientation="vertical" className="min-h-0">
               <ResizablePanel defaultSize={70} minSize={20} className="min-h-0">
                 <div className="relative h-full w-full">
@@ -144,7 +144,7 @@ function Index() {
           </ResizablePanel>
           <ResizableHandle withHandle />
           <ResizablePanel
-            defaultSize={25}
+            defaultSize={40}
             minSize={15}
             maxSize={95}
             className="hidden min-w-0 border-l border-border bg-card md:block"
