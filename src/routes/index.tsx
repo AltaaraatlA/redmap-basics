@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { MapCanvas } from "@/components/gis/MapCanvas";
 import { AttributePanel } from "@/components/gis/AttributePanel";
@@ -6,6 +6,7 @@ import { FeatureTable } from "@/components/gis/FeatureTable";
 import { ImportGeoJSON } from "@/components/gis/ImportGeoJSON";
 import { MapClock } from "@/components/gis/MapClock";
 import { useGisStore } from "@/lib/gis-store";
+import { langStore, useLang } from "@/lib/i18n";
 import {
   ResizableHandle,
   ResizablePanel,
@@ -48,14 +49,18 @@ export const Route = createFileRoute("/")({
 
 function Index() {
   const { features } = useGisStore();
-  const [lang, setLang] = useState<"RU" | "EN">("EN");
+  const { lang, setLang, t } = useLang();
+
+  useEffect(() => {
+    langStore.init();
+  }, []);
 
   const handleApprove = () => {
     if (features.length === 0) {
-      toast.error("No features to approve");
+      toast.error(t("noFeaturesToApprove"));
       return;
     }
-    toast.success(`Approved ${features.length} feature${features.length === 1 ? "" : "s"}`);
+    toast.success(`${t("approved")}: ${features.length}`);
   };
 
   return (
@@ -69,10 +74,10 @@ function Index() {
           <div>
             {/* ИЗМЕНЕНИЕ: Название в интерфейсе */}
             <h1 className="text-base font-bold leading-none tracking-tight">
-              Metapolis
+              {t("appTitle")}
             </h1>
             <p className="text-[10.5px] uppercase tracking-[0.18em] text-muted-foreground">
-              Web Mapping Workspace
+              {t("appSubtitle")}
             </p>
           </div>
         </div>
@@ -86,10 +91,10 @@ function Index() {
             disabled={features.length === 0}
           >
             <CheckCircle2 className="h-3.5 w-3.5" />
-            Approve
+            {t("approve")}
           </Button>
           <span>
-            <span className="font-semibold text-foreground">{features.length}</span> features
+            <span className="font-semibold text-foreground">{features.length}</span> {t("features")}
           </span>
           <span className="hidden h-4 w-px bg-border sm:block" />
           <MapClock />
@@ -120,7 +125,7 @@ function Index() {
                     <User className="h-3 w-3" />
                   </AvatarFallback>
                 </Avatar>
-                <span className="hidden sm:inline text-xs font-medium">Profile</span>
+                <span className="hidden sm:inline text-xs font-medium">{t("profile")}</span>
                 <ChevronDown className="h-3 w-3 opacity-60" />
               </button>
             </DropdownMenuTrigger>
@@ -128,20 +133,20 @@ function Index() {
             <DropdownMenuContent align="end" className="w-44 z-[1200]">
               <DropdownMenuItem className="gap-2 cursor-pointer">
                 <User className="h-4 w-4" />
-                Profile
+                {t("profile")}
               </DropdownMenuItem>
               <DropdownMenuItem className="gap-2 cursor-pointer">
                 <Settings className="h-4 w-4" />
-                Settings
+                {t("settings")}
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem className="gap-2 cursor-pointer">
                 <LogIn className="h-4 w-4" />
-                Log in
+                {t("login")}
               </DropdownMenuItem>
               <DropdownMenuItem className="gap-2 cursor-pointer text-destructive focus:text-destructive">
                 <LogOut className="h-4 w-4" />
-                Log out
+                {t("logout")}
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
