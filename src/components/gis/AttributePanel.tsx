@@ -8,6 +8,7 @@ import { useLang } from "@/lib/i18n";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Trash2, MapPin, Spline, Hexagon, Type as TypeIcon, Database, File as FileJson, Layers as LayersIcon, MessageSquare } from "lucide-react";
 import { PropertiesEditor } from "@/components/gis/PropertiesEditor";
+import { LayersPanel } from "@/components/gis/LayersPanel";
 
 const typeIcon = {
   Point: MapPin,
@@ -104,12 +105,7 @@ export function AttributePanel() {
           </TabsList>
 
           <TabsContent value="layers" className="flex-1 overflow-hidden m-0">
-            <div className="flex h-full flex-col items-center justify-center p-6 text-center text-sm text-muted-foreground">
-              <LayersIcon className="mb-3 h-10 w-10 text-muted-foreground/50" />
-              <p className="font-medium text-foreground">{t("layers")}</p>
-              <p className="mt-1">{t("layersHint")}</p>
-              <p className="mt-2 text-xs text-muted-foreground/70">{t("comingSoon")}</p>
-            </div>
+            <LayersPanel />
           </TabsContent>
 
           <TabsContent value="features" className="flex-1 overflow-hidden m-0">

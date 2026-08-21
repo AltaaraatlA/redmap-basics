@@ -59,7 +59,7 @@ export function MapCanvas() {
   const containerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<L.Map | null>(null);
   const layersRef = useRef<Map<string, L.Layer>>(new Map());
-  const { features, selectedId } = useGisStore();
+  const { features, selectedId, hiddenIds } = useGisStore();
 
   // init map
   useEffect(() => {
@@ -209,16 +209,18 @@ export function MapCanvas() {
 
     const existing = layersRef.current;
     const nextIds = new Set(features.map((f) => f.id));
+    const visibleIds = new Set(features.filter((f) => !hiddenIds.has(f.id)).map((f) => f.id));
 
-    // remove gone
+    // remove gone or hidden
     for (const [id, layer] of existing) {
-      if (!nextIds.has(id)) {
+      if (!nextIds.has(id) || !visibleIds.has(id)) {
         map.removeLayer(layer);
         existing.delete(id);
       }
     }
 
     for (const f of features) {
+      if (hiddenIds.has(f.id)) continue;
       const selected = f.id === selectedId;
       const prev = existing.get(f.id);
       if (prev) {
@@ -272,7 +274,7 @@ export function MapCanvas() {
         l.pm.disable();
       }
     }
-  }, [features, selectedId]);
+  }, [features, selectedId, hiddenIds]);
 
   // background click clears selection
   useEffect(() => {

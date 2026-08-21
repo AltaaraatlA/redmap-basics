@@ -16,13 +16,21 @@ export interface GisFeature {
 
 type Listener = () => void;
 
+export interface GisSnapshot {
+  features: GisFeature[];
+  selectedId: string | null;
+  hiddenIds: Set<string>;
+}
+
 class GisStore {
   private features: GisFeature[] = [];
   private selectedId: string | null = null;
+  private hiddenIds = new Set<string>();
   private listeners = new Set<Listener>();
-  private snapshot: { features: GisFeature[]; selectedId: string | null } = {
+  private snapshot: GisSnapshot = {
     features: this.features,
     selectedId: this.selectedId,
+    hiddenIds: this.hiddenIds,
   };
 
   getSnapshot = () => this.snapshot;
@@ -33,7 +41,11 @@ class GisStore {
   };
 
   private emit() {
-    this.snapshot = { features: this.features, selectedId: this.selectedId };
+    this.snapshot = {
+      features: this.features,
+      selectedId: this.selectedId,
+      hiddenIds: new Set(this.hiddenIds),
+    };
     this.listeners.forEach((l) => l());
   }
 
@@ -93,8 +105,33 @@ class GisStore {
 
   remove(id: string) {
     this.features = this.features.filter((f) => f.id !== id);
+    this.hiddenIds.delete(id);
     if (this.selectedId === id) this.selectedId = null;
     this.emit();
+  }
+
+  toggleVisibility(id: string) {
+    if (this.hiddenIds.has(id)) {
+      this.hiddenIds.delete(id);
+    } else {
+      this.hiddenIds.add(id);
+    }
+    this.emit();
+  }
+
+  setCategoryVisibility(category: string, visible: boolean, featureIds: string[]) {
+    for (const id of featureIds) {
+      if (visible) {
+        this.hiddenIds.delete(id);
+      } else {
+        this.hiddenIds.add(id);
+      }
+    }
+    this.emit();
+  }
+
+  isVisible(id: string) {
+    return !this.hiddenIds.has(id);
   }
 
   select(id: string | null) {

@@ -81,6 +81,20 @@ const dict = {
   addProperty: { EN: "Add property", RU: "Добавить свойство" },
   newPropertyKey: { EN: "new_property", RU: "новое_свойство" },
   noProperties: { EN: "No custom properties yet.", RU: "Пользовательских свойств пока нет." },
+
+  // Layers panel
+  userLayers: { EN: "User Layers", RU: "Пользовательские слои" },
+  userLayersHint: {
+    EN: "Features grouped by category. Toggle visibility on the map.",
+    RU: "Объекты, сгруппированные по категориям. Переключайте видимость на карте.",
+  },
+  noLayers: { EN: "No layers yet. Import GeoJSON or draw features to create layers.", RU: "Слоёв пока нет. Импортируйте GeoJSON или нарисуйте объекты для создания слоёв." },
+  featuresCount: { EN: "features", RU: "объектов" },
+  showOnMap: { EN: "Show on map", RU: "Показать на карте" },
+  hideFromMap: { EN: "Hide from map", RU: "Скрыть с карты" },
+  zoomToLayer: { EN: "Zoom to layer", RU: "Показать слой" },
+  basemap: { EN: "Basemap", RU: "Подложка" },
+  basemapOsm: { EN: "OpenStreetMap", RU: "OpenStreetMap" },
 } as const;
 
 export type TKey = keyof typeof dict;
