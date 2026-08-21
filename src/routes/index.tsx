@@ -47,6 +47,7 @@ export const Route = createFileRoute("/")({
 
 function Index() {
   const { features } = useGisStore();
+  const [lang, setLang] = useState<"RU" | "EN">("EN");
 
   const handleApprove = () => {
     if (features.length === 0) {
