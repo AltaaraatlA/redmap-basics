@@ -93,6 +93,7 @@ const dict = {
   showOnMap: { EN: "Show on map", RU: "Показать на карте" },
   hideFromMap: { EN: "Hide from map", RU: "Скрыть с карты" },
   zoomToLayer: { EN: "Zoom to layer", RU: "Показать слой" },
+  zoomToFeature: { EN: "Zoom to feature", RU: "Показать объект" },
   basemap: { EN: "Basemap", RU: "Подложка" },
   basemapOsm: { EN: "OpenStreetMap", RU: "OpenStreetMap" },
 } as const;

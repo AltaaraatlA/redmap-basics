@@ -72,6 +72,10 @@ export function LayersPanel() {
     );
   };
 
+  const zoomToFeature = (id: string) => {
+    window.dispatchEvent(new CustomEvent("gis:fit-features", { detail: [id] }));
+  };
+
   return (
     <div className="flex h-full flex-col overflow-hidden">
       <div className="flex items-center gap-2 border-b border-border bg-card px-4 py-2.5 shrink-0">
@@ -194,6 +198,14 @@ export function LayersPanel() {
                                   <EyeOff className="h-3 w-3 text-muted-foreground/50" />
                                 )}
                               </button>
+                              <button
+                                type="button"
+                                onClick={() => zoomToFeature(f.id)}
+                                className="shrink-0 outline-none"
+                                title={t("zoomToFeature")}
+                              >
+                                <MapIcon className="h-3 w-3 text-muted-foreground/70 hover:text-primary" />
+                              </button>
                             </div>
                           );
                         })}
@@ -209,3 +221,6 @@ export function LayersPanel() {
     </div>
   );
 }
+
+
+export { LayersPanel }
