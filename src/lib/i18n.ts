@@ -69,6 +69,18 @@ const dict = {
   // Clock
   local: { EN: "Loc", RU: "Мест" },
   msk: { EN: "MSK", RU: "МСК" },
+
+  // Properties editor
+  properties: { EN: "Properties", RU: "Свойства" },
+  propertiesHint: {
+    EN: "All attributes from the imported file are listed here.",
+    RU: "Здесь перечислены все атрибуты из импортированного файла.",
+  },
+  propertyKey: { EN: "Key", RU: "Ключ" },
+  propertyValue: { EN: "Value", RU: "Значение" },
+  addProperty: { EN: "Add property", RU: "Добавить свойство" },
+  newPropertyKey: { EN: "new_property", RU: "новое_свойство" },
+  noProperties: { EN: "No custom properties yet.", RU: "Пользовательских свойств пока нет." },
 } as const;
 
 export type TKey = keyof typeof dict;

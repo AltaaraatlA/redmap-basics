@@ -143,6 +143,7 @@ export function MapCanvas() {
         notes: "",
         createdAt: Date.now(),
         geojson: gj,
+        properties: {},
       });
       gisStore.select(id);
     });

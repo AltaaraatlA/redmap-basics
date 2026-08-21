@@ -90,6 +90,15 @@ export function ImportGeoJSON() {
               ? props.type
               : "imported";
         const notes = typeof props.notes === "string" ? props.notes : "";
+
+        // Capture all properties except the ones we promote to top-level fields
+        const properties: Record<string, unknown> = {};
+        for (const [k, v] of Object.entries(props)) {
+          if (k === "name" || k === "Name" || k === "NAME" || k === "title" || k === "label") continue;
+          if (k === "category" || k === "notes") continue;
+          properties[k] = v;
+        }
+
         const f: GisFeature = {
           id: newId(),
           name,
@@ -98,6 +107,7 @@ export function ImportGeoJSON() {
           notes,
           createdAt: Date.now(),
           geojson: { type: "Feature", geometry: feat.geometry, properties: props },
+          properties,
         };
         gisStore.add(f);
         added.push(f);

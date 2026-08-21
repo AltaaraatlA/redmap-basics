@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { useLang } from "@/lib/i18n";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Trash2, MapPin, Spline, Hexagon, Type as TypeIcon, Database, File as FileJson, Layers as LayersIcon, MessageSquare } from "lucide-react";
+import { PropertiesEditor } from "@/components/gis/PropertiesEditor";
 
 const typeIcon = {
   Point: MapPin,
@@ -151,6 +152,8 @@ export function AttributePanel() {
                       placeholder={t("notesPlaceholder")}
                     />
                   </div>
+
+                  <PropertiesEditor featureId={f.id} />
 
                   <div className="rounded-md border border-border bg-muted/40 p-3">
                     <div className="mb-1 text-[11px] uppercase tracking-wider text-muted-foreground">

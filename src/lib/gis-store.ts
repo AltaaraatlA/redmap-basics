@@ -11,6 +11,7 @@ export interface GisFeature {
   notes: string;
   createdAt: number;
   geojson: Feature;
+  properties: Record<string, unknown>;
 }
 
 type Listener = () => void;
@@ -43,6 +44,50 @@ class GisStore {
 
   update(id: string, patch: Partial<GisFeature>) {
     this.features = this.features.map((f) => (f.id === id ? { ...f, ...patch } : f));
+    this.emit();
+  }
+
+  updateProperty(id: string, key: string, value: unknown) {
+    this.features = this.features.map((f) => {
+      if (f.id !== id) return f;
+      const properties = { ...f.properties, [key]: value };
+      const geojson: Feature = { ...f.geojson, properties };
+      return { ...f, properties, geojson };
+    });
+    this.emit();
+  }
+
+  renameProperty(id: string, oldKey: string, newKey: string) {
+    this.features = this.features.map((f) => {
+      if (f.id !== id) return f;
+      const properties: Record<string, unknown> = {};
+      for (const [k, v] of Object.entries(f.properties)) {
+        properties[k === oldKey ? newKey : k] = v;
+      }
+      const geojson: Feature = { ...f.geojson, properties };
+      return { ...f, properties, geojson };
+    });
+    this.emit();
+  }
+
+  deleteProperty(id: string, key: string) {
+    this.features = this.features.map((f) => {
+      if (f.id !== id) return f;
+      const properties = { ...f.properties };
+      delete properties[key];
+      const geojson: Feature = { ...f.geojson, properties };
+      return { ...f, properties, geojson };
+    });
+    this.emit();
+  }
+
+  addProperty(id: string, key: string, value: unknown = "") {
+    this.features = this.features.map((f) => {
+      if (f.id !== id) return f;
+      const properties = { ...f.properties, [key]: value };
+      const geojson: Feature = { ...f.geojson, properties };
+      return { ...f, properties, geojson };
+    });
     this.emit();
   }
 
