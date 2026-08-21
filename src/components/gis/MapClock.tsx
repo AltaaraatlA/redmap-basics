@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import tzlookup from "tz-lookup";
+import { useLang } from "@/lib/i18n";
 
 function formatTime(tz: string, now: Date) {
   try {
@@ -16,6 +17,7 @@ function formatTime(tz: string, now: Date) {
 }
 
 export function MapClock() {
+  const { t } = useLang();
   const [tz, setTz] = useState<string>("UTC");
   const [now, setNow] = useState<Date>(() => new Date());
 
@@ -44,11 +46,11 @@ export function MapClock() {
   return (
     <div className="relative z-[1200] flex items-center gap-2 whitespace-nowrap rounded-md border border-border bg-card/90 px-2.5 py-1 text-xs shadow-sm">
       <span className="hidden font-mono text-foreground sm:inline">
-        <span className="text-muted-foreground">Loc</span>
+        <span className="text-muted-foreground">{t("local")}</span>
         <span className="font-semibold">{local}</span>
         <span className="ml-1 text-[10px] text-muted-foreground">{tzLabel}</span>
         <span className="mx-1.5 text-border">·</span>
-        <span className="text-muted-foreground">MSK</span>
+        <span className="text-muted-foreground">{t("msk")}</span>
         <span className="font-semibold">{moscow}</span>
       </span>
     </div>

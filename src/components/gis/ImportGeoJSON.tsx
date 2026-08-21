@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Upload } from "lucide-react";
 import { toast } from "sonner";
 import type { Feature, FeatureCollection, Geometry } from "geojson";
+import { translate, useLang } from "@/lib/i18n";
 import { gisStore, newId, type GeomType, type GisFeature } from "@/lib/gis-store";
 
 const SUPPORTED: GeomType[] = ["Point", "LineString", "Polygon"];
@@ -58,6 +59,7 @@ function pickName(props: Record<string, unknown> | null, fallback: string): stri
 
 export function ImportGeoJSON() {
   const inputRef = useRef<HTMLInputElement>(null);
+  const { t } = useLang();
 
   const handleFile = async (file: File) => {
     try {
@@ -65,7 +67,7 @@ export function ImportGeoJSON() {
       const parsed = JSON.parse(text);
       const raw = flattenToFeatures(parsed).flatMap(expandMulti);
       if (raw.length === 0) {
-        toast.error("No GeoJSON features found in file.");
+        toast.error(translate("noGeoJSONFound"));
         return;
       }
 
@@ -102,19 +104,17 @@ export function ImportGeoJSON() {
       });
 
       if (added.length === 0) {
-        toast.error(`Skipped ${skipped} unsupported geometr${skipped === 1 ? "y" : "ies"}.`);
+        toast.error(`${translate("skipped")}: ${skipped}`);
         return;
       }
 
       window.dispatchEvent(new CustomEvent("gis:fit-features", { detail: added.map((f) => f.id) }));
       toast.success(
-        `Imported ${added.length} feature${added.length === 1 ? "" : "s"}${
-          skipped ? ` · skipped ${skipped}` : ""
-        }`
+        `${translate("imported")}: ${added.length}${skipped ? ` · ${translate("skipped")}: ${skipped}` : ""}`
       );
     } catch (err) {
       console.error(err);
-      toast.error("Invalid GeoJSON file.");
+      toast.error(translate("invalidGeoJSON"));
     }
   };
 
@@ -138,7 +138,7 @@ export function ImportGeoJSON() {
         onClick={() => inputRef.current?.click()}
       >
         <Upload className="h-3.5 w-3.5" />
-        Import GeoJSON
+        {t("importGeoJSON")}
       </Button>
     </>
   );
