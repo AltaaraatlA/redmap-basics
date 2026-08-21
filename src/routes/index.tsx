@@ -92,6 +92,24 @@ function Index() {
           <span className="hidden h-4 w-px bg-border sm:block" />
           <MapClock />
           <span className="hidden h-4 w-px bg-border sm:block" />
+          <div className="flex items-center overflow-hidden rounded-md border border-border bg-card">
+            {(["RU", "EN"] as const).map((code) => (
+              <button
+                key={code}
+                type="button"
+                onClick={() => setLang(code)}
+                aria-pressed={lang === code}
+                className={`px-2 py-1.5 text-xs font-semibold transition-colors outline-none focus-visible:ring-1 focus-visible:ring-ring ${
+                  lang === code
+                    ? "bg-primary text-primary-foreground"
+                    : "text-muted-foreground hover:bg-accent hover:text-accent-foreground"
+                }`}
+              >
+                {code}
+              </button>
+            ))}
+          </div>
+          <span className="hidden h-4 w-px bg-border sm:block" />
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <button className="flex items-center gap-2 rounded-md border border-border bg-card px-2 py-1.5 text-foreground shadow-sm hover:bg-accent hover:text-accent-foreground transition-colors outline-none focus-visible:ring-1 focus-visible:ring-ring">
