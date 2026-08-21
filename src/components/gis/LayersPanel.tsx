@@ -221,6 +221,3 @@ export function LayersPanel() {
     </div>
   );
 }
-
-
-export { LayersPanel }
